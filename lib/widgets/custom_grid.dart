@@ -1,11 +1,13 @@
+import 'package:counter/providers/counter_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomGrid extends StatelessWidget {
+class CustomGrid extends ConsumerWidget {
   const CustomGrid({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.watch(counterProvider);
     return GridView.builder(
       itemCount: 1,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -30,11 +32,11 @@ class CustomGrid extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
-              const Text.rich(
+              Text.rich(
                   textAlign: TextAlign.center,
                   TextSpan(children: [
                     TextSpan(
-                      text: '80',
+                      text: '$counter',
                       style: TextStyle(
                         fontSize: 30,
                         color: Colors.white,
@@ -52,7 +54,9 @@ class CustomGrid extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref.read(counterProvider.notifier).state++;
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: const CircleBorder(
@@ -65,7 +69,9 @@ class CustomGrid extends StatelessWidget {
                       child: Icon(Icons.add),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref.read(counterProvider.notifier).state--;
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: const CircleBorder(
